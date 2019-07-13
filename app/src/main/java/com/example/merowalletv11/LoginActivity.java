@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         void validate1 (View view){
             Intent in = new Intent(LoginActivity.this, SignupActivity.class);
             startActivity(in);
-            finish();
+
         }
 
        public void viewAll()
