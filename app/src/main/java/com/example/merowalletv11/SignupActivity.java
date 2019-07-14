@@ -17,7 +17,6 @@ public class SignupActivity extends AppCompatActivity {
     DatabaseHelper MwDb;
     Button btnAddData;
     private TextInputLayout editfirst,editlast,edituser,editpassword,editconfirm,editaddress,editphone,editemail;
-    Boolean check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class SignupActivity extends AppCompatActivity {
     private boolean validateUsername(){
         String username = edituser.getEditText().getText().toString().trim();
         if(username.isEmpty()){
-            edituser.setError("Filed Can't Be Empty");
+            edituser.setError("Field Can't Be Empty");
             return false;
         }else if(username.length()>15){
             edituser.setError("Username too long");
@@ -59,29 +58,42 @@ public class SignupActivity extends AppCompatActivity {
         }else {
 
             Cursor res = MwDb.getAllData();
-            res.moveToFirst();
-            do {
-                String user = res.getString(3);
-                // String editusername = edituser.getEditText().getText().toString();
+            if(res.getCount()==0)
+            {
+                edituser.setError(null);
+                return true;
+            }
+            else {
+                res.moveToFirst();
+                do {
+                    String user = res.getString(3);
+                    // String editusername = edituser.getEditText().getText().toString();
 
-                if (user.equals(username)) {
-                    showMessage("PLease insert another username");
-                    return false;
-                }
-            } while (res.moveToNext());
+                    if (user.equals(username)) {
+                        showMessage("Please insert another username");
+                        return false;
+                    }
+                } while (res.moveToNext());
 
-            edituser.setError(null);
-            return true;
+                edituser.setError(null);
+                return true;
+            }
         }
 
     }
 
     private boolean validatePassword() {
         String passwordInput = editpassword.getEditText().getText().toString().trim();
+        String passwordConfirm = editconfirm.getEditText().getText().toString().trim();
         if (passwordInput.isEmpty()){
             editpassword.setError("Field Can't Be Empty");
             return false;
-        }else{
+        }
+        else if(!passwordInput.equals(passwordConfirm)){
+            editpassword.setError("Passwords do not match");
+            return false;
+        }
+        else{
             editpassword.setError(null);
             return true;
         }
