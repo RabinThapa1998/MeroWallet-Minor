@@ -70,7 +70,8 @@ public class SignupActivity extends AppCompatActivity {
                     // String editusername = edituser.getEditText().getText().toString();
 
                     if (user.equals(username)) {
-                        showMessage("Please insert another username");
+                       // showMessage("Please insert another username");
+                        edituser.setError("Please enter another username");
                         return false;
                     }
                 } while (res.moveToNext());
