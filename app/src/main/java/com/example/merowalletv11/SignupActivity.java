@@ -71,7 +71,7 @@ public class SignupActivity extends AppCompatActivity {
 
                     if (user.equals(username)) {
                        // showMessage("Please insert another username");
-                        edituser.setError("Please enter another username");
+                        edituser.setError("Username already taken");
                         return false;
                     }
                 } while (res.moveToNext());
