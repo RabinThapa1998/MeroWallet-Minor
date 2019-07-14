@@ -8,16 +8,32 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME ="MW.db";
-    public static final String TABLE_NAME ="SIGN_UP";
-    public static final String COL_1 ="ID";
-    public static final String COL_2 ="FIRSTNAME";
-    public static final String COL_3 ="LASTNAME";
-    public static final String COL_4 ="USERNAME";
-    public static final String COL_5 ="PASSWORD";
-    public static final String COL_6 ="CONFIRMPASSWORD";
-    public static final String COL_7 ="PHONENUMBER";
-    public static final String COL_8 ="ADDRESS";
-    public static final String COL_9 ="EMAIL";
+    public static final String SIGNUP_TABLE_NAME ="SIGN_UP";
+    public static final String EXPENSE_TABLE_NAME ="EXPENSE";
+    public static final String SIGNUP_COL_ID ="ID"; //1
+    public static final String SIGNUP_COL_FIRSTNAME ="FIRSTNAME"; //2
+    public static final String SIGNUP_COL_LASTNAME ="LASTNAME"; //3
+    public static final String SIGNUP_COL_USERNAME ="USERNAME"; //4
+    public static final String SIGNUP_COL_PASSWORD ="PASSWORD"; //5
+    public static final String SIGNUP_COL_CONFIRMPASSWORD ="CONFIRMPASSWORD"; //6
+    public static final String SIGNUP_COL_PHONENUMBER ="PHONENUMBER"; //7
+    public static final String SIGNUP_COL_ADDRESS ="ADDRESS"; //8
+    public static final String SIGNUP_COL_EMAIL ="EMAIL"; //9
+
+
+    //new table for expense
+    public static final String EXPENSE_COL_ID = "EID";
+    public static final String EXPENSE_COL_MERCHANTNAME = "MERCHANT_NAME";
+    public static final String EXPENSE_COL_AMOUNT = "AMOUNT";
+    public static final String EXPENSE_COL_DATE = "DATE";
+    public static final String EXPENSE_COL_CATEGORY = "CATEGORY";
+    public static final String EXPENSE_COL_PAYMENT_TYPE = "PAYMENT_TYPE";
+    public static final String EXPENSE_COL_RECIEPT = "RECIEPT";
+
+
+
+
+
 
 
     //whenever this construtor is called the database is created.
@@ -29,13 +45,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("create table "+ TABLE_NAME +
+
+        sqLiteDatabase.execSQL("create table "+ SIGNUP_TABLE_NAME +
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT,FIRSTNAME TEXT NOT NULL,LASTNAME TEXT NOT NULL,USERNAME TEXT NOT NULL UNIQUE ,PASSWORD TEXT NOT NULL,CONFIRMPASSWORD TEXT NOT NULL,PHONENUMBER TEXT,ADDRESS TEXT,EMAIL TEXT NOT NULL)");
+
+
+        sqLiteDatabase.execSQL("create table "+ EXPENSE_TABLE_NAME +
+                "(EID INTEGER PRIMARY KEY AUTOINCREMENT,MERCHANT_NAME TEXT,AMOUNT TEXT,DATE TEXT ,CATEGORY TEXT ,PAYMENT_TYPE TEXT ,RECIEPT TEXT)");
+
+        //Creating expense table
+        /*String CREATE_EXPENSE_TABLE = "create table " + EXPENSE_TABLE_NAME +
+                " ( " + EXPENSE_COL_ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + EXPENSE_COL_MERCHANTNAME + "TEXT,"
+                + EXPENSE_COL_AMOUNT + "INTEGER,"
+                + EXPENSE_COL_DATE + "DATE,"
+                + EXPENSE_COL_CATEGORY + "TEXT,"
+                + EXPENSE_COL_PAYMENT_TYPE + "TEXT,"
+                + EXPENSE_COL_RECIEPT + "BLOB );";
+                */
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ SIGNUP_TABLE_NAME);
         onCreate(sqLiteDatabase);
 
     }
@@ -43,20 +87,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean insertData(String  firstname ,String lastname ,String username, String password ,String confirmpassword,String phonenumber,String address,String email) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_2, firstname);
-//        String fname= contentValues.getAsString(COL_2);
-////        if(fname == null)
-////        {
-////            throw new IllegalArgumentException("First name can't be null");
-////        }
-        contentValues.put(COL_3, lastname);
-        contentValues.put(COL_4, username);
-        contentValues.put(COL_5,password);
-        contentValues.put(COL_6,confirmpassword);
-        contentValues.put(COL_7,phonenumber);
-        contentValues.put(COL_8,address);
-        contentValues.put(COL_9,email);
-        long result = db.insert(TABLE_NAME,null,contentValues);
+        ContentValues contentValues2= new ContentValues();
+
+
+        contentValues.put(SIGNUP_COL_FIRSTNAME, firstname);
+        contentValues.put(SIGNUP_COL_LASTNAME, lastname);
+        contentValues.put(SIGNUP_COL_USERNAME, username);
+        contentValues.put(SIGNUP_COL_PASSWORD,password);
+        contentValues.put(SIGNUP_COL_CONFIRMPASSWORD,confirmpassword);
+        contentValues.put(SIGNUP_COL_PHONENUMBER,phonenumber);
+        contentValues.put(SIGNUP_COL_ADDRESS,address);
+        contentValues.put(SIGNUP_COL_EMAIL,email);
+        //different table different content value
+        contentValues2.put(EXPENSE_COL_MERCHANTNAME,firstname);
+        contentValues2.put(EXPENSE_COL_CATEGORY,lastname);
+        contentValues2.put(EXPENSE_COL_AMOUNT,address);
+        contentValues2.put(EXPENSE_COL_DATE,phonenumber);
+        contentValues2.put(EXPENSE_COL_PAYMENT_TYPE,email);
+        contentValues2.put(EXPENSE_COL_RECIEPT,confirmpassword);
+
+        long result = db.insert(SIGNUP_TABLE_NAME,null,contentValues);
         if(result == -1)
             return false;
         else
@@ -68,7 +118,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getAllData()
     {
         SQLiteDatabase database = this.getWritableDatabase();
-        Cursor res = database.rawQuery("select * from "+TABLE_NAME,null);
+        Cursor res = database.rawQuery("select * from "+SIGNUP_TABLE_NAME,null);
         return res;
 
     }
