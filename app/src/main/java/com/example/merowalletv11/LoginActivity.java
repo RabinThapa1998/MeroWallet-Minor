@@ -49,6 +49,11 @@ public class LoginActivity extends AppCompatActivity {
                @Override
                public void onClick(View v) {
                    Cursor res = myDb.getAllData();
+                   if(res.getCount()==0)
+                   {
+                       showMessage("Please register first");
+                   }
+                   else {
                    res.moveToFirst();
                    do {
 
@@ -68,11 +73,12 @@ public class LoginActivity extends AppCompatActivity {
                    }while(res.moveToNext());
 
                    if(check==false)
-                       showMessage("Please Register First");
+                       //showMessage("Invalid Credentials");
+                       Toast.makeText(LoginActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
 
 
 
-               }
+               }}
 
            });
        }
