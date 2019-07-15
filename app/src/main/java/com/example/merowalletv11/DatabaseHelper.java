@@ -80,6 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ SIGNUP_TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ EXPENSE_TABLE_NAME);
         onCreate(sqLiteDatabase);
 
     }
@@ -105,6 +106,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues2.put(EXPENSE_COL_DATE,phonenumber);
         contentValues2.put(EXPENSE_COL_PAYMENT_TYPE,email);
         contentValues2.put(EXPENSE_COL_RECIEPT,confirmpassword);
+
+
+        db.insert(EXPENSE_TABLE_NAME,null,contentValues2);
 
         long result = db.insert(SIGNUP_TABLE_NAME,null,contentValues);
         if(result == -1)
